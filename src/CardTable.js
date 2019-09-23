@@ -1,38 +1,43 @@
 import React, { Component } from "react";
 import Card from "./Card";
-import axios from "axios"
+import axios from "axios";
+import './CardTable.css'
 
 class CardTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
       deckId: '',
-      faceUpCards: []
-    }
+      faceUpCards: [],
+      cardsAvailable: true
+    };
     this.handleClick = this.handleClick.bind(this);
   }
 
-  async componentDidMount(){
-    let result = await axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-    this.setState({deckId: result.data.deck_id});
+  async componentDidMount() {
+    let result = await axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
+    this.setState({ deckId: result.data.deck_id });
   }
 
-  async handleClick(){
+  async handleClick() {
     let result = await axios.get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=1`);
+    let cardsAvailable = result.data.remaining > 0 ? true : false;
+    console.log(result.data)
     this.setState({
-      faceUpCards: [...this.state.faceUpCards, result.data.cards[0]]
-    })
+      faceUpCards: [...this.state.faceUpCards, result.data.cards[0]],
+      cardsAvailable
+    });
   }
 
-  render(){
+  render() {
     return (
-      <div style={{width: "100vw"}}>
-        <button onClick={this.handleClick}>GIMME A CARD</button>
+      <div className="card-table">
+        {this.state.cardsAvailable ? <button onClick={this.handleClick}>GIMME A CARD</button> : null}
         {this.state.faceUpCards.map(card => {
-          return <Card card={card} key={card.code}/>
+          return <Card card={card} key={card.code} />
         })}
       </div>
-    )
+    );
   }
 }
 

@@ -1,12 +1,13 @@
 import React, { Component } from "react";
+import './Card.css'
 
 class Card extends Component {
-  render(){
+  render() {
     return (
-      <div style={{position: "fixed", margin: "0 auto"}}>
-        <img src={this.props.card.image} alt={this.props.card.code}/>
+      <div className="card">
+        <img src={this.props.card.image} alt={this.props.card.code} />
       </div>
-    )
+    );
   }
 }
 
