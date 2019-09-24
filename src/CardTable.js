@@ -26,7 +26,7 @@ class CardTable extends Component {
     let cardsAvailable = result.data.remaining > 0 ? true : false;
     console.log(result.data)
     // handle case to clear interval after no cards remain.
-    if(cardsAvailable){
+    if (cardsAvailable) {
       this.setState({
         faceUpCards: [...this.state.faceUpCards, result.data.cards[0]],
         cardsAvailable
@@ -42,11 +42,13 @@ class CardTable extends Component {
 
   render() {
     return (
-      <div className="card-table">
+      <div className="card-container">
         {this.state.cardsAvailable ? <button onClick={this.handleClick}>GIMME A CARD</button> : null}
-        {this.state.faceUpCards.map(card => {
-          return <Card card={card} key={card.code} />
-        })}
+        <div className="card-table">
+          {this.state.faceUpCards.map(card => {
+            return <Card card={card} key={card.code} />
+          })}
+        </div>
       </div>
     );
   }
